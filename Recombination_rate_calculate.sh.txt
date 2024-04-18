@@ -1,0 +1,46 @@
+SIMULATE="/project-whj/software/ReLERNN/ReLERNN/ReLERNN_SIMULATE"
+TRAIN="/project-whj/software/ReLERNN/ReLERNN/ReLERNN_TRAIN"
+PREDICT="/project-whj/software/ReLERNN/ReLERNN/ReLERNN_PREDICT"
+BSCORRECT="/project-whj/software/ReLERNN/ReLERNN/ReLERNN_BSCORRECT"
+SEED="42"
+MU="1.91e-9"
+URTR="1"
+DIR="/project-whj/lzx/0516_chicken_recombrate/CH_result/CH_Chr1_RelERNN_output"
+VCF="/project-whj/lzx/0516_chicken_recombrate/VCF/CH_20sample_0516-160sample.chr1-39_20230306.Galgal7b.SNP.filtered.PASS.geno02maf005.vcf.recode.vcf"
+GENOME="/project-whj/lzx/00_0410_reocomb_result/02_Hotspot_motif/genome_bed/Chr1.genome.bed.txt"
+MASK="/project-whj/lzx/00_0410_reocomb_result/02_Hotspot_motif/accessibility_mask.bed"
+
+# Simulate data
+${SIMULATE} \
+    --vcf ${VCF} \
+    --genome ${GENOME} \
+    --mask ${MASK} \
+    --projectDir ${DIR} \
+    --assumedMu ${MU} \
+    --assumedGenTime 1 \
+    --upperRhoThetaRatio ${URTR} \
+    --nTrain 100000 \
+    --nVali 1000 \
+    --nTest 1000 \
+    --seed ${SEED}
+# Train network
+${TRAIN} \
+    --projectDir ${DIR} \
+    --nEpochs 1000 \
+    --nValSteps 20 \
+    --seed ${SEED} \
+    -t 16 \
+    --gpuID 1
+# Predict
+${PREDICT} \
+    --vcf ${VCF} \
+    --projectDir ${DIR} \
+    --seed ${SEED}
+
+# Parametric Bootstrapping
+${BSCORRECT} \
+    --projectDir ${DIR} \
+    --nSlice 100 \
+    --nReps 1000 \
+    --seed ${SEED}
+
