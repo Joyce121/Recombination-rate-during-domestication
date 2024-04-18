@@ -1,0 +1,7 @@
+bedtools makewindows -g chicken_chr_genome.txt.bed  -w 50000 >50kb.chicken.window.bed
+bedtools intersect -a  50kb.chicken.window.bed -b WL_chr1-39_maf005geno02.txt -wao > WL.50kb.window.intersect.bed
+awk '{print $1"_"$2"_"$3"\t"$9"\t"$8}'   WL.50kbwindow.intersect.bed  > WL50kb.window.intersect.bed_cal_window
+cat WL.50kb.window.intersect.bed_cal_window |awk '{s[$1]+=$3;count[$1]+=1;gene[$1]=$2}END{for(i in s){print i,gene[i],s[i]/count[i]}}'> WL.50kb.window.intersect.bed_cal_window_result
+awk -F "_" '{print $1"\t"$2"\t"$3"\t"$4}'  WL.50kb.window.intersect.bed_cal_window_result  > WL.50kb.window.intersect.bed_cal_window_result_avg_in
+sed -i 's/ /\t/g' WL.50kb.window.intersect.bed_cal_window_result_avg_in
+perl change.pl WL.50kb.window.intersect.bed_cal_window_result_avg_in > WL.50kb.window.intersect.bed_cal_window_result_avg_result
