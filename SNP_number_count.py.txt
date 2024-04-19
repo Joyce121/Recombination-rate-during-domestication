@@ -1,0 +1,25 @@
+import os
+import gzip
+
+def count_snps_in_vcf(vcf_file):
+    snp_count = 0
+
+    with gzip.open(vcf_file, 'rt') as f:
+        for line in f:
+            if not line.startswith('#'):  # 
+                snp_count += 1
+
+    return snp_count
+
+def batch_count_snps(vcf_directory):
+    for filename in os.listdir(vcf_directory):
+        if filename.endswith('1018-121sample.chr1-39_20230306.Galgal7b.SNP.filtered.PASS.geno02.vcf.recode.vcf.gz'):  # 仅处理以 '.vcf.gz' 结尾的文件
+            vcf_file = os.path.join(vcf_directory, filename)
+            snp_count = count_snps_in_vcf(vcf_file)
+            print(f"文件名: {filename}, SNP 数量: {snp_count}")
+
+
+vcf_directory = './'
+
+
+batch_count_snps(vcf_directory)

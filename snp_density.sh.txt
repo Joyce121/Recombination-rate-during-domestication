@@ -1,0 +1,4 @@
+for i in CH GGS LX NX WL JNBR
+do
+vcftools --gzvcf ${i}_20sample_0516-160sample.chr1-39_20230306.Galgal7b.SNP.filtered.PASS.geno02maf005.vcf.recode.vcf.gz  --SNPdensity 1000 --out ${i}_SNPdensity
+done
