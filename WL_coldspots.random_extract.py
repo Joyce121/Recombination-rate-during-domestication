@@ -10,12 +10,12 @@ def extract_lines(file_path, num_lines, num_iterations):
     for i in range(num_iterations):
         random_lines = random.sample(lines, num_lines)
 
-        # 将提取的行保存到新文件中
+ 
         with open(f"./WL_coldspots_random/WL_coldspots_random_{i+1}.txt", "w") as output_file:
             output_file.writelines(random_lines)
 
-# 示例用法
-file_path = "chr1-33.1kb.bed"  # 替换为您的文件路径
+
+file_path = "chr1-33.1kb.bed"  
 num_lines = 52080
 num_iterations = 10000
 extract_lines(file_path, num_lines, num_iterations)
