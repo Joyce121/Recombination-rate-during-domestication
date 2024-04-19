@@ -1,4 +1,4 @@
-for i in CH GGS WL
+for i in  WL
 do
     for k in 1 10 5
 
